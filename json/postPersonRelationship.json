@@ -1,0 +1,17 @@
+{
+  "person1": {
+    "id": "4",
+    "firstName": "Tracy",
+    "lastName": "Rainey",
+    "userName": "trainey",
+    "password": "test",
+    "email": "trainey@nowho.com" },
+    "person2": {
+      "id": "1",
+    "firstName": "Elizabeth",
+    "lastName": "Huston",
+    "userName": "ehuston",
+    "password": "test",
+    "email": "ehuston@nowho.com"},
+  "howRelated": {"id": "3"}
+}
