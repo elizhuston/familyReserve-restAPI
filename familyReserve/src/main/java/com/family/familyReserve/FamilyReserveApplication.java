@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Primary;
 public class FamilyReserveApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Test setting breakpoint");
 		SpringApplication.run(FamilyReserveApplication.class, args);
 	}
 	

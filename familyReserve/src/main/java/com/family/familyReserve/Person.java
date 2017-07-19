@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "person")
 public class Person implements Serializable {
@@ -34,7 +36,8 @@ public class Person implements Serializable {
 	@Column(unique = true)
 	private String userName;
 
-	@OneToMany(mappedBy = "person1")
+	@OneToMany(mappedBy = "person")
+	@JsonIgnore
 	private List<PersonRelationship> relatives;
 
 	// Constructors
