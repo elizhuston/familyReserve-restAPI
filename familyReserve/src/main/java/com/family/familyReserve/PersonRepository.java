@@ -10,8 +10,14 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "people", path = "people")
 public interface PersonRepository extends  PagingAndSortingRepository<Person, Long>{
+	
 	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName)")
 	public Person findPersonByUserName(@Param("userName") String userName);
 	
 	public List<Person> findByLastName(@Param("lastName") String lastName);
+
+	@Query("SELECT p from Person p")
+	public List<Person> findAllPeople();
+	
+
 }
