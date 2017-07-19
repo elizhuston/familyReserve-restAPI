@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.io.Serializable;
@@ -16,16 +19,19 @@ import java.util.List;
 @Table(name = "family")
 public class Family implements Serializable {
 
-//	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private int id;
 
 	@Column(unique = true)
 	private String name;
 
-
+	@OneToMany
+	@JoinColumn(name = "familyId")
+	private List<PersonRelationship> members;
+	
 	public Family() {
 		// TODO Auto-generated constructor stub
 	}
@@ -34,6 +40,15 @@ public class Family implements Serializable {
 	}
 	public long getId() {
 		return id;
+	}
+	public List<PersonRelationship> getMembers() {
+		return members;
+	}
+	public void setMembers(List<PersonRelationship> members) {
+		this.members = members;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	public void setId(int id) {
 		this.id = id;

@@ -14,7 +14,7 @@ public class RelationType implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private int id;
 
 	@Column(unique = true)
 	private String description;
@@ -31,7 +31,7 @@ public class RelationType implements Serializable {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

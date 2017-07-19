@@ -19,27 +19,33 @@ public class PersonRelationship implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private int id;
 
-	@ManyToOne(optional=false)
+	@ManyToOne
 	@JoinColumn(name = "personId")
-	private Person person1;
+	private Person person;
 	
 	@ManyToOne
-	@JoinColumn(name = "relativeId",insertable=false, updatable=false)
-	private Person person2;
+	@JoinColumn(name = "relativeId")
+	private Person relative;
 	
 	@ManyToOne
 	@JoinColumn(name = "relationTypeId")
 	private RelationType howRelated;
 	
+	
+	@ManyToOne
+	@JoinColumn(name = "familyId")
+	private Family family;
+	
+	
 	//Constructors
 	
 	public PersonRelationship() {}
 	
-	public PersonRelationship(Person person1, Person person2, RelationType howRelated) {
-		this.person1=person1;
-		this.person2=person2;
+	public PersonRelationship(Person person, Person relative, RelationType howRelated) {
+		this.person=relative;
+		this.relative=relative;
 		this.howRelated=howRelated;
 	}
 	
@@ -47,24 +53,32 @@ public class PersonRelationship implements Serializable {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Person getPerson1() {
-		return person1;
+	public Person getPerson() {
+		return person;
 	}
 
-	public void setPerson1(Person person1) {
-		this.person1 = person1;
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
-	public Person getPerson2() {
-		return person2;
+	public Family getFamily() {
+		return family;
 	}
 
-	public void setPerson2(Person person2) {
-		this.person2 = person2;
+	public void setFamily(Family family) {
+		this.family = family;
+	}
+
+	public Person getRelative() {
+		return relative;
+	}
+
+	public void setRelative(Person relative) {
+		this.relative = relative;
 	}
 
 	public RelationType getHowRelated() {
