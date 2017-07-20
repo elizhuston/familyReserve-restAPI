@@ -40,6 +40,9 @@ public class Person implements Serializable {
 	@JsonIgnore
 	private List<PersonRelationship> relatives;
 
+	
+	@OneToMany
+	private List<Address> address;
 	// Constructors
 	public Person() {
 	}

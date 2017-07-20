@@ -28,7 +28,8 @@ public class frController {
 	@Autowired
 	private RelationTypeRepository relationTypeRepository;
 
-	
+	@Autowired
+	private AddressRepository addressRepository;
 	@Autowired
 	private PersonRelationshipRepo personRelationshipRepo;
 	
@@ -124,6 +125,25 @@ public class frController {
 					return new ResponseEntity<PersonRelationship>(r, HttpStatus.CREATED);
 				}
 				
+				
+				// adds add Person Address
+				@RequestMapping(path = "/api/address", method = RequestMethod.POST)
+				public ResponseEntity<Address> createPersonAddress(@Validated @RequestBody Address r) {
+					System.out.println("/api/address POST ");
+//					if (r.getPerson1()== null){
+//						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
+//					}
+//					if (r.getPerson2()== null){
+//						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
+//					}
+			
+					/*if (personRelationshipRepo.findRelativeByName(r.getPerson1().getFirstName()) != null) {
+						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
+					}*/
+
+					addressRepository.save(r);
+					return new ResponseEntity<Address>(r, HttpStatus.CREATED);
+				}
 	public frController() {
 
 	}
