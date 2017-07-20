@@ -43,10 +43,11 @@ public class PersonRelationship implements Serializable {
 	
 	public PersonRelationship() {}
 	
-	public PersonRelationship(Person person, Person relative, RelationType howRelated) {
+	public PersonRelationship(Person person, Person relative, RelationType howRelated,  Family family) {
 		this.person=relative;
 		this.relative=relative;
 		this.howRelated=howRelated;
+		this.family=family;
 	}
 	
 	public long getId() {
