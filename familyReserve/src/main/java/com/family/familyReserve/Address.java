@@ -34,17 +34,29 @@ public class Address implements Serializable {
 
 	private int zipCode;
 	
+	private Double latitude;
+	
+	private Double longitude;
+	
 	// Constructors
 		public Address() {
 		}
 		
-		public Address(String streetAddress, String city, String state, int zipCode) {
+		public Address(String streetAddress, String city, String state, int zipCode, Double latitude, Double longitude ) {
 			this.setStreetAddress(streetAddress);
 			this.setCity(city);
 			this.setState(state);
 			this.setZipCode(zipCode);
+			this.setLatitude(latitude);
+			this.setLongitude(longitude);
+			
 		}
-
+		public Address(String streetAddress, String city, String state, int zipCode) {
+			this.setStreetAddress(streetAddress);
+			this.setCity(city);
+			this.setState(state);
+			this.setZipCode(zipCode);	
+		}
 		public String getStreetAddress() {
 			return streetAddress;
 		}
@@ -75,6 +87,22 @@ public class Address implements Serializable {
 
 		public void setZipCode(int zipCode) {
 			this.zipCode = zipCode;
+		}
+
+		public Double getLatitude() {
+			return latitude;
+		}
+
+		public void setLatitude(Double latitude) {
+			this.latitude = latitude;
+		}
+
+		public Double getLongitude() {
+			return longitude;
+		}
+
+		public void setLongitude(Double longitude) {
+			this.longitude = longitude;
 		}
 	}
 		
