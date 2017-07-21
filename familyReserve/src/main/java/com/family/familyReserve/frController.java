@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @SpringBootApplication
 @RestController
+@Api(value = "Family ")
+
 public class frController {
 
 	@Autowired
@@ -33,7 +38,8 @@ public class frController {
 	@Autowired
 	private PersonRelationshipRepo personRelationshipRepo;
 	
-	// adds a new user 
+
+	@ApiOperation(value = "Add a new user", notes = "Adds a new user and returns the object containing the id")
 	@RequestMapping(path = "/api/user", method = RequestMethod.POST)
 	public ResponseEntity<Person> createAppUser(@Validated @RequestBody Person p) {
 		System.out.println("/api/user POST ");
@@ -47,8 +53,21 @@ public class frController {
 		personRepository.save(p);
 		return new ResponseEntity<Person>(p, HttpStatus.CREATED);
 	}
+
+	@ApiOperation(value = "Add a new person", notes = "Adds a new person and returns the object containing the id")
+	@JsonView(View.Individual.class)
+	@RequestMapping(path = "/api/person", method = RequestMethod.POST)
+	public ResponseEntity<Person> createPerson(@Validated @RequestBody Person newPerson) {
+		System.out.println("/api/person POST ");
+		if (newPerson.getFirstName() == null) {
+			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
+		}
+		
+		personRepository.save(newPerson);
+		return new ResponseEntity<Person>(newPerson, HttpStatus.CREATED);
+	}
 	
-	// returns an array of all Person objects
+	@ApiOperation(value = "Find People", notes = "Returns and array of all People")
 	@RequestMapping(path = "/api/people", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findAllPeople() {
 		List<Person> people = personRepository.findAllPeople();
@@ -56,7 +75,28 @@ public class frController {
 
 	}
 	
-	// return relatives for a given person id
+	
+	@ApiOperation(value = "Find Relation Types", notes = "Returns and array of all Relation Types")
+	@RequestMapping(path = "/api/relationType", method = RequestMethod.GET)
+	public ResponseEntity<List<RelationType>> findAllRelationTypes() {
+		List<RelationType> types = relationTypeRepository.findAllRelationTypes();
+		return new ResponseEntity<List<RelationType>>(types, HttpStatus.OK);
+
+	}
+	
+
+	@JsonView(View.Summary.class)
+		@ApiOperation(value = "Find Families", notes = "Returns and array of all Families")
+		@RequestMapping(path = "/api/family", method = RequestMethod.GET)
+		public ResponseEntity<List<Family>> findAllFamilies() {
+			System.out.println("/api/family GET ");
+			List<Family> families = familyRepository.findAllFamilies();
+			return new ResponseEntity<List<Family>>(families, HttpStatus.OK);
+
+		}
+		
+		
+	@ApiOperation(value = "Find Relatives", notes = "Returns relatives for a given person id")
 	@RequestMapping(path = "/api/relatives/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findRelativesForPerson(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/api/relatives/{id} GET " + id);
@@ -66,7 +106,8 @@ public class frController {
 
 	}
 	
-	// return members for a given family id
+
+	@ApiOperation(value = "Find family members", notes = "Returns family members for given family id")
 		@RequestMapping(path = "/api/family/members/{id}", method = RequestMethod.GET)
 		public ResponseEntity<List<Person>> findFamilyMembers(@PathVariable(name = "id", required = true) Integer id) {
 			System.out.println("/family/members/{id GET " + id);
@@ -76,7 +117,18 @@ public class frController {
 
 		}
 	
-	// adds a new family
+	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Address>> findPersonAddress(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id} GET " + id);
+	
+		List<Address> residences = addressRepository.findPersonAddress(id);
+		return new ResponseEntity<List<Address>>(residences, HttpStatus.OK);
+
+	}
+	
+	
+	@ApiOperation(value = "Create new family", notes = "Creates family and returns id")
 	@RequestMapping(path = "/api/family", method = RequestMethod.POST)
 	public ResponseEntity<Family> createFamily(@Validated @RequestBody Family f) {
 		System.out.println("/api/family POST ");
@@ -91,7 +143,8 @@ public class frController {
 		return new ResponseEntity<Family>(f, HttpStatus.CREATED);
 	}
 
-	// adds a new RelationType
+
+	@ApiOperation(value = "Add new Relation Type", notes = "Creates relation type and returns id")
 		@RequestMapping(path = "/api/relationType", method = RequestMethod.POST)
 		public ResponseEntity<RelationType> createRelationType(@Validated @RequestBody RelationType t) {
 			System.out.println("/api/relationType POST ");
@@ -106,7 +159,8 @@ public class frController {
 			return new ResponseEntity<RelationType>(t, HttpStatus.CREATED);
 		}
 		
-		// adds a new PersonRelationship
+
+		@ApiOperation(value = "Add new Relationship between two people in a famil", notes = "Creates family relationship and returns id")
 				@RequestMapping(path = "/api/relationship", method = RequestMethod.POST)
 				public ResponseEntity<PersonRelationship> createPersonRelationship(@Validated @RequestBody PersonRelationship r) {
 					System.out.println("/api/relationship POST ");
@@ -126,21 +180,10 @@ public class frController {
 				}
 				
 				
-				// adds add Person Address
+				@ApiOperation(value = "Add address for person", notes = "Adds address for person")
 				@RequestMapping(path = "/api/address", method = RequestMethod.POST)
 				public ResponseEntity<Address> createPersonAddress(@Validated @RequestBody Address r) {
 					System.out.println("/api/address POST ");
-//					if (r.getPerson1()== null){
-//						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
-//					}
-//					if (r.getPerson2()== null){
-//						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
-//					}
-			
-					/*if (personRelationshipRepo.findRelativeByName(r.getPerson1().getFirstName()) != null) {
-						return new ResponseEntity<PersonRelationship>(HttpStatus.BAD_REQUEST);
-					}*/
-
 					addressRepository.save(r);
 					return new ResponseEntity<Address>(r, HttpStatus.CREATED);
 				}
