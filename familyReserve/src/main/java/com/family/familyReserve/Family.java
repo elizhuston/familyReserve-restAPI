@@ -1,16 +1,15 @@
 package com.family.familyReserve;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,18 +22,19 @@ public class Family implements Serializable {
 
 	@Id
 	@GeneratedValue
+	@JsonView(View.Summary.class)
 	private int id;
 
 	@Column(unique = true)
+	@JsonView(View.Summary.class)
 	private String name;
 
 	@OneToMany
 	@JoinColumn(name = "familyId")
 	private List<PersonRelationship> members;
 	
-	public Family() {
-		// TODO Auto-generated constructor stub
-	}
+	public Family() {}
+	
 	public Family(String name) {
 		this.name=name;
 	}
@@ -59,9 +59,7 @@ public class Family implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-//	public static long getSerialversionuid() {
-//		return serialVersionUID;
-//	}
+
 	
 
 }
