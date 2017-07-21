@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "personRelationship")
@@ -23,19 +24,22 @@ public class PersonRelationship implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "personId")
+	@NotNull(message = "person id is required.")
 	private Person person;
 	
 	@ManyToOne
 	@JoinColumn(name = "relativeId")
+	@NotNull(message = "relative Id is required.")
 	private Person relative;
 	
 	@ManyToOne
 	@JoinColumn(name = "relationTypeId")
+	@NotNull(message = "relation type Id is required.")
 	private RelationType howRelated;
-	
 	
 	@ManyToOne
 	@JoinColumn(name = "familyId")
+	@NotNull(message = "Family Id is required.")
 	private Family family;
 	
 	
@@ -43,10 +47,11 @@ public class PersonRelationship implements Serializable {
 	
 	public PersonRelationship() {}
 	
-	public PersonRelationship(Person person, Person relative, RelationType howRelated) {
+	public PersonRelationship(Person person, Person relative, RelationType howRelated,  Family family) {
 		this.person=relative;
 		this.relative=relative;
 		this.howRelated=howRelated;
+		this.family=family;
 	}
 	
 	public long getId() {

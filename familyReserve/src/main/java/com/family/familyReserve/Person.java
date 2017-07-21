@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "person")
@@ -26,23 +27,32 @@ public class Person implements Serializable {
 	@GeneratedValue
 	private int id;
 
+	@JsonView(View.Individual.class)
 	@NotNull(message = "First name is required.")
-	@Size(min = 1)
+	@Size(min = 2)
 	private String firstName;
+	
+	@JsonView(View.Individual.class)
 	@NotNull(message = "Last name is required.")
-	@Size(min = 1)
+	@Size(min = 2)
 	private String lastName;
 
 	@Column(unique = true)
 	private String userName;
 
+	private String password;
+	
+	@JsonView(View.Individual.class)
+	private String email;
+	
+	@OneToMany(mappedBy = "person")
+	@JsonIgnore
+	private List<Address> addresses;
+	
 	@OneToMany(mappedBy = "person")
 	@JsonIgnore
 	private List<PersonRelationship> relatives;
 
-	
-	@OneToMany
-	private List<Address> address;
 	// Constructors
 	public Person() {
 	}
@@ -53,10 +63,30 @@ public class Person implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+
 	}
 
+	public Person(String firstName, String lastName, String email, Address address) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.addresses.add(address);
+	}
+	
 	public String getUserName() {
 		return userName;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setUserName(String userName) {
@@ -79,8 +109,7 @@ public class Person implements Serializable {
 		this.email = email;
 	}
 
-	private String password;
-	private String email;
+
 
 	public int getId() {
 		return id;

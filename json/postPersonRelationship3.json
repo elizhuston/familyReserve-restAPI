@@ -8,12 +8,12 @@
     "password" : "test",
     "email" : "ehuston@nowho.com" },
     "relative": {
-    "id": "2",
+    "id": "3",
     "familyId" : "5",
-    "firstName": "Katy",
-    "lastName": "DiPasquale",
-    "userName": "katydip",
-    "password": "test",
-    "email": "katydip@nowho.com"},
+    "firstName" : "Tracy",
+    "lastName" : "Rainey",
+    "userName" : "trainey",
+    "password" : "test",
+    "email" : "trainey@nowho.com"},
   "howRelated": {"id": "6"}
 }

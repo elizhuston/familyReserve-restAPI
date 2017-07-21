@@ -8,7 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table (name = "address")
@@ -24,14 +27,22 @@ public class Address implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "personId")
+	@NotNull(message = "Person required")
 	private Person person;
 	
+	@NotNull(message = "Street Address is required.")
+	@Size(min = 5)
 	private String streetAddress;
-
+	
+	@NotNull(message = "City is required.")
+	@Size(min = 2)
 	private String city;
-
+	
+	@NotNull(message = "State is required.")
+	@Size(min = 2)
 	private String state;
-
+	
+	@NotNull(message = "Zipcode is required")
 	private int zipCode;
 	
 	private Double latitude;
@@ -42,23 +53,46 @@ public class Address implements Serializable {
 		public Address() {
 		}
 		
-		public Address(String streetAddress, String city, String state, int zipCode, Double latitude, Double longitude ) {
-			this.setStreetAddress(streetAddress);
-			this.setCity(city);
-			this.setState(state);
-			this.setZipCode(zipCode);
-			this.setLatitude(latitude);
-			this.setLongitude(longitude);
-			
+		public Address(Person person, String streetAddress, String city, String state, int zipCode, Double latitude, Double longitude ) {
+			this.person= person;
+			this.streetAddress=streetAddress;
+			this.city=city;
+			this.state=state;
+			this.zipCode=zipCode;
+			this.latitude=latitude;
+			this.longitude=longitude;
 		}
-		public Address(String streetAddress, String city, String state, int zipCode) {
-			this.setStreetAddress(streetAddress);
-			this.setCity(city);
-			this.setState(state);
-			this.setZipCode(zipCode);	
+		
+		public Address(Person person, String streetAddress, String city, String state, int zipCode) {
+			this.person= person;
+			this.streetAddress=streetAddress;
+			this.city=city;
+			this.state=state;
+			this.zipCode=zipCode;
 		}
+		
 		public String getStreetAddress() {
 			return streetAddress;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public Person getPerson() {
+			return person;
+		}
+
+		public void setPerson(Person person) {
+			this.person = person;
+		}
+
+		public static long getSerialversionuid() {
+			return serialVersionUID;
 		}
 
 		public void setStreetAddress(String streetAddress) {
