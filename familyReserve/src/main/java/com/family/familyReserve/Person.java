@@ -46,6 +46,7 @@ public class Person implements Serializable {
 	private String email;
 	
 	@OneToMany(mappedBy = "person")
+	@JsonIgnore
 	private List<Address> addresses;
 	
 	@OneToMany(mappedBy = "person")
@@ -62,15 +63,30 @@ public class Person implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+
 	}
 
-	public Person(String firstName, String lastName, String email) {
+	public Person(String firstName, String lastName, String email, Address address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.addresses.add(address);
 	}
+	
 	public String getUserName() {
 		return userName;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setUserName(String userName) {

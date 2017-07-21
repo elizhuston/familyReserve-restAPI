@@ -127,6 +127,16 @@ public class frController {
 
 	}
 	
+	@ApiOperation(value = "Get person by id", notes = "Returns person object for given id")
+	@RequestMapping(path = "/api/person/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Person> findPersonById(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/person/{id} GET " + id);
+	
+		Person person = personRepository.findPersonById(id);
+		return new ResponseEntity<Person>(person, HttpStatus.OK);
+
+	}
+	
 	
 	@ApiOperation(value = "Create new family", notes = "Creates family and returns id")
 	@RequestMapping(path = "/api/family", method = RequestMethod.POST)
