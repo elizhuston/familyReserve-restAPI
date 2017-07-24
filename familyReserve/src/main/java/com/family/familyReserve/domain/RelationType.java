@@ -1,4 +1,4 @@
-package com.family.familyReserve;
+package com.family.familyReserve.domain;
 
 import java.io.Serializable;
 

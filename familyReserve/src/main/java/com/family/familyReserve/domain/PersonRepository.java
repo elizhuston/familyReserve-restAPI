@@ -1,4 +1,4 @@
-package com.family.familyReserve;
+package com.family.familyReserve.domain;
 
 //
 //import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +13,9 @@ public interface PersonRepository extends  PagingAndSortingRepository<Person, Lo
 	
 	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName)")
 	public Person findPersonByUserName(@Param("userName") String userName);
+	
+	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName) and password = :password")
+	public Person checkCredentials(@Param("userName") String userName, @Param("password") String password);
 	
 	public List<Person> findByLastName(@Param("lastName") String lastName);
 

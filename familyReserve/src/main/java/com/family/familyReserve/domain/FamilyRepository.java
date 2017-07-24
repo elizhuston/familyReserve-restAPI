@@ -1,4 +1,4 @@
-package com.family.familyReserve;
+package com.family.familyReserve.domain;
 
 import java.util.List;
 
@@ -11,8 +11,7 @@ public interface FamilyRepository  extends JpaRepository<Family, Integer>{
 	@Query("SELECT f from Family f WHERE UPPER(name) = UPPER(:name)")
 	public Family findFamilyByName(@Param("name") String name);
 		
-	@Query("SELECT relatives from Family as f LEFT JOIN f.members as members LEFT JOIN members.relative as relatives"
-			+ " WHERE f.id = :id")
+	@Query("SELECT f.members from Family as f WHERE f.id = :id")
 	public List<Person> findFamilyMembers(@Param("id") int id);
 
 	@Query("SELECT f from Family f")
