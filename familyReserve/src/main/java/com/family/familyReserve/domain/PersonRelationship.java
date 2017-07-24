@@ -1,14 +1,17 @@
-package com.family.familyReserve;
+package com.family.familyReserve.domain;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "personRelationship")
@@ -19,7 +22,7 @@ public class PersonRelationship implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
 
 	@ManyToOne
@@ -37,6 +40,7 @@ public class PersonRelationship implements Serializable {
 	@NotNull(message = "relation type Id is required.")
 	private RelationType howRelated;
 	
+	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "familyId")
 	@NotNull(message = "Family Id is required.")

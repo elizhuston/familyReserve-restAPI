@@ -1,4 +1,4 @@
-package com.family.familyReserve;
+package com.family.familyReserve.domain;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface PersonRelationshipRepo extends JpaRepository<PersonRelationship
 	public Person findRelativeByName(@Param("firstName") String firstName);
 
 	@Query("SELECT p from Person as p LEFT JOIN p.relatives as relatives WHERE p.id=:id")
-	public <List> Person findRelationship(@Param("id") int id);
+	public <List>Person findRelationship(@Param("id") int id);
 
 	@Query("SELECT relative from PersonRelationship as pr WHERE person_id=:id")
 	public List<Person> findRelativesForPerson(@Param("id") int id);
