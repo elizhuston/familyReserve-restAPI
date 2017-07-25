@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.family.familyReserve.domain.Family;
 import com.family.familyReserve.domain.Person;
 import com.family.familyReserve.domain.PersonRepository;
+import com.family.familyReserve.domain.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Controller
 public class SessionController {
 	@Autowired
 	private PersonRepository personRepository;
-	
+	@JsonView(View.Individual.class)
 	@PostMapping({"/session/new"})
 	public ResponseEntity<Person> login(@RequestBody Credentials creds) {
 		System.out.println("Logging in user " + creds.getUserName());
-		System.out.println("/api/family POST ");
 		if (creds.getUserName() == null) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
