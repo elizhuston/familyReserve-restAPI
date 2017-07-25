@@ -22,13 +22,19 @@ public class Post {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@JsonView(View.Summary.class)
+	@JsonView(View.Individual.class)
 	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name = "personId")
-	private Person postedBy;
+	@JoinColumn(name = "familyId")
+	@JsonView(View.Individual.class)
+	private Family family;
 	
+	@ManyToOne
+	@JoinColumn(name = "personId")
+	@JsonView(View.Individual.class)
+	private Person postedBy;
+	@JsonView(View.Individual.class)
 	private String content;
 	
 //	@JsonFormat (shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
@@ -68,6 +74,14 @@ public class Post {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Family getFamily() {
+		return family;
+	}
+
+	public void setFamily(Family family) {
+		this.family = family;
 	}
 
 	public Post() {

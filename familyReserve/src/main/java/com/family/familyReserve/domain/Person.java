@@ -42,13 +42,11 @@ public class Person implements Serializable {
 	private int id;
 
 	@JsonView(View.Individual.class)
-	@NotEmpty(message = "First name is required.")
 	@Size(min = 2)
 	@ApiModelProperty(notes = "Persons first name")
 	private String firstName;
 
 	@JsonView(View.Individual.class)
-	@NotNull(message = "Last name is required.")
 	@Size(min = 2)
 	@ApiModelProperty(notes = "Persons last name")
 	private String lastName;
@@ -236,6 +234,19 @@ public class Person implements Serializable {
 			hashedPassword=digest;
 		
 		return (hashedPassword);
+	}
+
+	public void merge(Person person) {
+		if (person.firstName != null) {
+		this.firstName = person.firstName;
+		}
+		if (person.lastName != null) {
+		this.lastName = person.lastName;
+		}
+		if (person.email != null) {
+		this.email = person.email;
+		}
+
 	}
 
 }

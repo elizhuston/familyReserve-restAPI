@@ -69,6 +69,28 @@ public class PersonController {
 		personRepository.save(newPerson);
 		return new ResponseEntity<Person>(newPerson, HttpStatus.CREATED);
 	}
+	
+	@JsonView(View.Individual.class)
+	@RequestMapping(path = "/api/person", method = RequestMethod.PUT)
+	public ResponseEntity<Person> updatePerson(@Validated @RequestBody Person person) {
+		System.out.println("/api/person PUT ");
+		if (person.getFirstName() == null) {
+			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
+		}
+		if(person.getPassword() != null){
+			person.setEncPassword(person.getPassword());
+		}
+		Person existing = personRepository.findPersonById(person.getId());
+        if (existing == null){
+        	return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
+        }
+        
+		existing.merge(person);
+		personRepository.save(existing);
+	
+		return new ResponseEntity<Person>(person, HttpStatus.CREATED);
+	}
+	
 	@JsonView(View.Individual.class)
 	@ApiOperation(value = "Get person by id", notes = "Returns person object for given id")
 	@RequestMapping(path = "/api/person/{id}", method = RequestMethod.GET)
