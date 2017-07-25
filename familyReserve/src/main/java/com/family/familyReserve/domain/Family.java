@@ -27,11 +27,11 @@ public class Family implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@JsonView(View.Summary.class)
+	@JsonView(View.Individual.class)
 	private int id;
 
 	@Column(unique = true)
-	@JsonView(View.Summary.class)
+	@JsonView(View.Individual.class)
 	private String name;
 
 	@ManyToMany
