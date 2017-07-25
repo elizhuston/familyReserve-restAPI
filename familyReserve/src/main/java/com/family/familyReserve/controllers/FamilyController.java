@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.family.familyReserve.domain.Family;
 import com.family.familyReserve.domain.FamilyRepository;
 import com.family.familyReserve.domain.Person;
+import com.family.familyReserve.domain.PersonRepository;
 import com.family.familyReserve.domain.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 
 @SpringBootApplication
 @RestController
@@ -30,7 +32,10 @@ public class FamilyController {
 	@Autowired
 	private FamilyRepository familyRepository;
 	
+	@Autowired
+	private PersonRepository personRepository;
 	
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Create new family", notes = "Creates family and returns id")
 	@RequestMapping(path = "/api/family", method = RequestMethod.POST)
 	public ResponseEntity<Family> createFamily(@Validated @RequestBody Family f) {
@@ -46,6 +51,22 @@ public class FamilyController {
 		return new ResponseEntity<Family>(f, HttpStatus.CREATED);
 	}
 	
+	@RequestMapping(path = "/api/family/{familyId}/addMember/{personId}", method = RequestMethod.PUT)
+	@ApiOperation(value = "Add member to family", notes = "Add a person to a family" + " request\n")
+	public ResponseEntity<Void> addFamilyMember(@PathVariable (name="familyId", required=true) Integer familyId, @PathVariable(name="personId", required = true) Integer personId) {
+		System.out.println("/api/family/{familyId}/addMember/{personId} ");
+		Person p =personRepository.findPersonById(personId);
+		Family f= familyRepository.findOne(familyId);
+		if (p == null || f == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		f.addMember(p);
+		familyRepository.save(f);
+      	
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find Families", notes = "Returns and array of all Families")
 	@RequestMapping(path = "/api/family", method = RequestMethod.GET)
@@ -56,12 +77,14 @@ public class FamilyController {
 
 	}
 	
+	@JsonView(View.Individual.class)
 	@ApiOperation(value = "Find family members", notes = "Returns family members for given family id")
 	@RequestMapping(path = "/api/family/{id}/members", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findFamilyMembers(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/family/members/{id GET " + id);
 	
 		List<Person> people = familyRepository.findFamilyMembers(id);
+		System.out.println("Size of people list is " + people.size());
 		return new ResponseEntity<List<Person>>(people, HttpStatus.OK);
 
 	}

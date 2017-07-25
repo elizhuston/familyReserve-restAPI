@@ -1,12 +1,12 @@
 package com.family.familyReserve.domain;
 
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -22,34 +21,40 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.family.familyReserve.domain.View.Individual;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "person")
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonView(View.Individual.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@ApiModelProperty(notes = "The auto generated id of the person")
 	private int id;
 
 	@JsonView(View.Individual.class)
 	@NotEmpty(message = "First name is required.")
 	@Size(min = 2)
+	@ApiModelProperty(notes = "Persons first name")
 	private String firstName;
 
 	@JsonView(View.Individual.class)
 	@NotNull(message = "Last name is required.")
 	@Size(min = 2)
+	@ApiModelProperty(notes = "Persons last name")
 	private String lastName;
 
 	@Column(unique = true)
+	@ApiModelProperty(notes = "userName used for login, must be unique")
 	private String userName;
 
 	@JsonProperty(access = Access.WRITE_ONLY)
@@ -60,17 +65,19 @@ public class Person implements Serializable {
 
 	@JsonView(View.Individual.class)
 	private String email;
-
+	
+	@JsonView(View.Summary.class)
 	@OneToMany(mappedBy = "person")
 	@JsonIgnore
 	private List<Address> addresses;
 
+	@JsonView(View.Summary.class)
 	@OneToMany(mappedBy = "person")
-	@JsonIgnore
 	private List<PersonRelationship> relatives;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "person_family")
+	@JsonView(View.Individual.class)
+	@ManyToMany
+	@JoinTable(name = "person_family", joinColumns = @JoinColumn(name = "personId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "familyId", referencedColumnName = "id"))
 	private List<Family> families;
 
 	// Constructors
@@ -84,7 +91,7 @@ public class Person implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		this.encPassword = encPassword;
+		this.encPassword = PasswordEncoderGenerator(password);
 
 	}
 
@@ -95,7 +102,7 @@ public class Person implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		this.encPassword = encPassword;
+		this.encPassword = PasswordEncoderGenerator(password);
 	}
 
 	public Person(String firstName, String lastName, String email, Address address, Family family) {
@@ -105,13 +112,17 @@ public class Person implements Serializable {
 		this.addresses.add(address);
 		this.families.add(family);
 	}
+
+//	public Person(String username, String encryptedPassword) {
+//		this.userName = username;
+//		this.encPassword = PasswordEncoderGenerator(password);
+//	}
 	
-	
-	public Person(String username, String encryptedPassword) {
+	public Person(String username, String password) {
 		this.userName = username;
-		this.encPassword = encryptedPassword;
+		this.encPassword = PasswordEncoderGenerator(password);
 	}
-	
+
 	public List<Family> getFamilies() {
 		return families;
 	}
@@ -125,10 +136,9 @@ public class Person implements Serializable {
 	}
 
 	public void setEncPassword(String encPassword) {
-		this.encPassword = encPassword;
+		this.encPassword = PasswordEncoderGenerator(password);
 	}
 
-	
 	public String getUserName() {
 		return userName;
 	}
@@ -209,18 +219,24 @@ public class Person implements Serializable {
 		this.relatives = relatives;
 	}
 
-	public void PasswordEncoderGenerator(String password) {
-		password = "123456";
-		int i = 0;
-		while (i < 10) {
-
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String hashedPassword = passwordEncoder.encode(password);
-
-			System.out.println(hashedPassword);
-			i++;
-		}
-
+	public String PasswordEncoderGenerator(String password) {
+//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//		String hashedPassword = passwordEncoder.encode(password);
+//
+//		System.out.println(hashedPassword);
+			final String SALT = "supercalifragistic";
+			String hashedPassword = password + SALT;
+			MessageDigest md = null;
+			try {
+				md = MessageDigest.getInstance("SHA");
+			} catch (NoSuchAlgorithmException ex) {
+				System.out.println(ex);
+			}
+			md.update(password.getBytes());
+			String digest = new String(md.digest());
+			hashedPassword=digest;
+		
+		return (hashedPassword);
 	}
 
 }

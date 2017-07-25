@@ -1,6 +1,5 @@
 package com.family.familyReserve.controllers;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,10 @@ public class SessionController {
 		if (creds.getPassword() == null) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
-		Person person = personRepository.checkCredentials(creds.getUserName(), creds.getPassword());
+
+		Person person2 = new Person(creds.getUserName(),creds.getPassword());
+		
+		Person person = personRepository.checkCredentials(person2.getUserName(), person2.getEncPassword());
 		if (person != null){
 			return new ResponseEntity<Person>(person, HttpStatus.OK);
 		}
@@ -41,6 +43,7 @@ public class SessionController {
 	static class Credentials {
 		private String userName;
 		private String password;
+
 		
 		public String getUserName() {
 			return userName;

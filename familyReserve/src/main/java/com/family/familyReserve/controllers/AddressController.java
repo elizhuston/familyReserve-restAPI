@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.family.familyReserve.domain.Address;
 import com.family.familyReserve.domain.AddressRepository;
+import com.family.familyReserve.domain.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +38,7 @@ public class AddressController {
 		return new ResponseEntity<Address>(r, HttpStatus.CREATED);
 	}
 	
+	@JsonView(View.Individual.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
 	@RequestMapping(path = "/api/address/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Address>> findPersonAddress(@PathVariable(name = "id", required = true) Integer id) {

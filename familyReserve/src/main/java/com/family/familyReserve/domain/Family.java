@@ -34,8 +34,13 @@ public class Family implements Serializable {
 	@JsonView(View.Summary.class)
 	private String name;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "person_family")
+	@ManyToMany
+	@JoinTable(name = "person_family",
+	joinColumns =
+	@JoinColumn(name = "familyId", referencedColumnName= "id"),
+	inverseJoinColumns=
+	@JoinColumn(name="personId", referencedColumnName ="id")
+	)
 	private List<Person> members;
 	
 	@OneToMany
