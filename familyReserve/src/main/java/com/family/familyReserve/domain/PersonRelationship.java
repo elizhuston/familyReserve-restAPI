@@ -25,16 +25,19 @@ public class PersonRelationship implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
 
+	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "personId")
 	@NotNull(message = "person id is required.")
 	private Person person;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "relativeId")
 	@NotNull(message = "relative Id is required.")
 	private Person relative;
 	
+	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "relationTypeId")
 	@NotNull(message = "relation type Id is required.")

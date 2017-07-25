@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
 @Table (name = "address")
 public class Address implements Serializable {
@@ -25,29 +27,33 @@ public class Address implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
-
+	
+	@JsonView(View.Individual.class)
 	@ManyToOne
 	@JoinColumn(name = "personId")
 	@NotNull(message = "Person required")
 	private Person person;
 	
+	@JsonView(View.Individual.class)
 	@NotNull(message = "Street Address is required.")
 	@Size(min = 5)
 	private String streetAddress;
 	
+	@JsonView(View.Individual.class)
 	@NotNull(message = "City is required.")
 	@Size(min = 2)
 	private String city;
 	
+	@JsonView(View.Individual.class)
 	@NotNull(message = "State is required.")
 	@Size(min = 2)
 	private String state;
-	
+	@JsonView(View.Individual.class)
 	@NotNull(message = "Zipcode is required")
 	private int zipCode;
-	
+	@JsonView(View.Individual.class)
 	private Double latitude;
-	
+	@JsonView(View.Individual.class)
 	private Double longitude;
 	
 	// Constructors

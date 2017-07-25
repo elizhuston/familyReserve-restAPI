@@ -14,7 +14,7 @@ public interface PersonRepository extends  PagingAndSortingRepository<Person, Lo
 	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName)")
 	public Person findPersonByUserName(@Param("userName") String userName);
 	
-	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName) and password = :password")
+	@Query("SELECT p from Person p WHERE UPPER(userName) = UPPER(:userName) and encPassword = :password")
 	public Person checkCredentials(@Param("userName") String userName, @Param("password") String password);
 	
 	public List<Person> findByLastName(@Param("lastName") String lastName);
@@ -24,6 +24,7 @@ public interface PersonRepository extends  PagingAndSortingRepository<Person, Lo
 
 	@Query("SELECT p from Person p WHERE id=:id")
 	public Person findPersonById(@Param("id")Integer id);
-	
+
+		
 
 }
