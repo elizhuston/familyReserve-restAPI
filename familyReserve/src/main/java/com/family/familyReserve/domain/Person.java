@@ -71,7 +71,6 @@ public class Person implements Serializable {
 	@JsonIgnore
 	private List<Address> addresses;
 
-	@JsonView(View.Summary.class)
 	@OneToMany(mappedBy = "person")
 	private List<PersonRelationship> relatives;
 
