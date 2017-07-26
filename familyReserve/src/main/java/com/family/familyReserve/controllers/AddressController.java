@@ -56,13 +56,25 @@ public class AddressController {
 		addressRepository.save(adr);
 		return new ResponseEntity<Address>(adr, HttpStatus.CREATED);
 	}
+	
+	@JsonView(View.SummaryWithAddresses.class)
+	@ApiOperation(value = "Get address by Address id", notes = "Returns address for given address id")
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Address> findOne(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id}/ GET " + id);
+	
+		Address adr = addressRepository.findOne(id);
+		return new ResponseEntity<Address>(adr, HttpStatus.OK);
+
+	}
+	
 // ========= Returns person address matching ID in the database
 	
 	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
 	@RequestMapping(path = "/api/address/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Address>> findPersonAddress(@PathVariable(name = "id", required = true) Integer id) {
-		System.out.println("/api/address/{id}/person GET " + id);
+		System.out.println("/api/address/person/{id} GET " + id);
 	
 		List<Address> residences = addressRepository.findPersonAddress(id);
 		return new ResponseEntity<List<Address>>(residences, HttpStatus.OK);
