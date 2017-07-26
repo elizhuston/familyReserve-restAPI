@@ -23,37 +23,41 @@ public class Address implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	@JsonView(View.Summary.class)
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "personId")
 	@NotNull(message = "Person required")
 	private Person person;
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithAddresses.class)
 	@NotNull(message = "Street Address is required.")
 	@Size(min = 5)
 	private String streetAddress;
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithAddresses.class)
 	@NotNull(message = "City is required.")
 	@Size(min = 2)
 	private String city;
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithAddresses.class)
 	@NotNull(message = "State is required.")
 	@Size(min = 2)
 	private String state;
-	@JsonView(View.Individual.class)
+	
+	@JsonView(View.SummaryWithAddresses.class)
 	@NotNull(message = "Zipcode is required")
 	private int zipCode;
-	@JsonView(View.Individual.class)
+	
+	@JsonView(View.SummaryWithAddresses.class)
 	private Double latitude;
-	@JsonView(View.Individual.class)
+	
+	@JsonView(View.SummaryWithAddresses.class)
 	private Double longitude;
 	
 	// Constructors
@@ -145,7 +149,7 @@ public class Address implements Serializable {
 		public void setLongitude(Double longitude) {
 			this.longitude = longitude;
 		}
-
+  
 		public void merge(Address r) {
 			// TODO Auto-generated method stub
 			if (r.streetAddress != null) {
@@ -167,6 +171,5 @@ public class Address implements Serializable {
 //				this.longitude = r.longitude;
 //			}
 		}
-}
 
 		

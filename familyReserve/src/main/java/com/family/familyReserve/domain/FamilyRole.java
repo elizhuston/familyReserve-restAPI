@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Table(name = "familyRole")
 public class FamilyRole {
 	private static final long serialVersionUID = 1L;
-
+	
+	@JsonView(View.Summary.class)
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;

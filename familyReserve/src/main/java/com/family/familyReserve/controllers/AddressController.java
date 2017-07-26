@@ -32,8 +32,8 @@ public class AddressController {
 	
 	@Autowired
 	private AddressRepository addressRepository;
-	//================== Creates New Person Address ==============
 	
+	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Add address for person", notes = "Adds address for person")
 	@RequestMapping(path = "/api/address", method = RequestMethod.POST)
 	public ResponseEntity<Address> createPersonAddress(@Validated @RequestBody Address r) {
@@ -56,50 +56,69 @@ public class AddressController {
 		addressRepository.save(adr);
 		return new ResponseEntity<Address>(adr, HttpStatus.CREATED);
 	}
+	
+	@JsonView(View.SummaryWithAddresses.class)
+	@ApiOperation(value = "Get address by Address id", notes = "Returns address for given address id")
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Address> findOne(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id}/ GET " + id);
+	
+		Address adr = addressRepository.findOne(id);
+		return new ResponseEntity<Address>(adr, HttpStatus.OK);
+
+	}
+	
 // ========= Returns person address matching ID in the database
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
 	@RequestMapping(path = "/api/address/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Address>> findPersonAddress(@PathVariable(name = "id", required = true) Integer id) {
-		System.out.println("/api/address/{id}/person GET " + id);
+		System.out.println("/api/address/person/{id} GET " + id);
 	
 		List<Address> residences = addressRepository.findPersonAddress(id);
 		return new ResponseEntity<List<Address>>(residences, HttpStatus.OK);
 
 	}
 //================== Updates Existing Person Address ============ 	
-	
-	@ApiOperation(value = "Updates person address", notes = "Updates a person address in the database")	
+
+	@JsonView(View.SummaryWithAddresses.class)
+	@ApiOperation(value = "Updates person address", notes = "Updates a person's address with given addressId")	
 	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Address> updateAddress( @RequestBody Address r)  {
 			//@PathVariable(name = "id", required = true) Integer id) {
-		System.out.println("api/address PUT id is" + r.getId() );
-		
-			if (r.getId()==0)  {
-			return new ResponseEntity<Address>(r,HttpStatus.BAD_REQUEST);
-		}
-			
-		Address existing = addressRepository.findOne(r.getId());
-			if (existing == null){
+
+		System.out.println("/api/address/{id} PUT id is" + r.getId() );
+
+		if (r.getId()==0){
 			return new ResponseEntity<Address>(r, HttpStatus.BAD_REQUEST);
-			}
-			
+		}
+		
+		Address existing = addressRepository.findOne(r.getId());
+		if (existing == null) {
+			return new ResponseEntity<Address>(r,HttpStatus.BAD_REQUEST); 
+		}
 		
 		existing.merge(r);
-		String fullAddress = existing.getStreetAddress() + " "+ existing.getCity() 
-		+ " , " + existing.getState() + " , " + existing.getZipCode();
-		Address adr = new ConsumeResults().getLngLatFromGoogle(existing);				
 		
-		System.out.println(fullAddress);
-		existing.setLatitude(adr.getLatitude());
-		existing.setLongitude(adr.getLongitude());
-		addressRepository.save(existing);
-		return new ResponseEntity<Address>(r, HttpStatus.OK);
+	String fullAddress = existing.getStreetAddress() + " "+ existing.getCity() 
+	+ " , " + existing.getState() + " , " + existing.getZipCode(); 
+	
+	Address adr = new ConsumeResults().getLngLatFromGoogle(existing);	
+		
+	System.out.println(fullAddress);
+	existing.setLatitude(adr.getLatitude());
+	existing.setLongitude(adr.getLongitude());
+	
+	addressRepository.save(adr);
+	return new ResponseEntity<Address>(adr, HttpStatus.OK);
+
+	
+
 }	
 //================ Deletes existing Person Address =====================
 	
-	@ApiOperation(value = "Deletes person address with given id", notes = "Deletes a person address from database")	
+	@ApiOperation(value = "Deletes person's address with given addressId", notes = "Deletes an address from database for addressId")	
 	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteAddress(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/api/address/{id} DELETE " + id);

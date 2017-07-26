@@ -44,7 +44,7 @@ public class PostController {
 		return new ResponseEntity<Post>(post, HttpStatus.CREATED);
 	}
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Get family posted content", notes = "Returns an array of posts for family")
 	@RequestMapping(path = "/api/post/family/{familyId}", method = RequestMethod.GET)
 	public ResponseEntity<List<Post>> getFamilyContent(@PathVariable(name = "familyId", required = true) Integer id) {

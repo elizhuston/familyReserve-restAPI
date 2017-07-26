@@ -20,7 +20,8 @@ public class PersonRelationship implements Serializable {
 	* 
 	*/
 	private static final long serialVersionUID = 1L;
-
+	
+	@JsonView(View.Summary.class)
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private int id;
@@ -31,7 +32,7 @@ public class PersonRelationship implements Serializable {
 	@NotNull(message = "person id is required.")
 	private Person person;
 	
-	
+	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "relativeId")
 	@NotNull(message = "relative Id is required.")

@@ -35,22 +35,23 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@ApiModelProperty(notes = "The auto generated id of the person")
 	private int id;
 
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@Size(min = 2)
 	@ApiModelProperty(notes = "Persons first name")
 	private String firstName;
 
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@Size(min = 2)
 	@ApiModelProperty(notes = "Persons last name")
 	private String lastName;
 
+	@JsonView(View.Summary.class)
 	@Column(unique = true)
 	@ApiModelProperty(notes = "userName used for login, must be unique")
 	private String userName;
@@ -61,18 +62,20 @@ public class Person implements Serializable {
 	@Transient
 	private String password;
 
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private String email;
 	
-	@JsonView(View.Summary.class)
+	
 	@OneToMany(mappedBy = "person")
 	@JsonIgnore
+	@JsonView(View.SummaryWithAddresses.class)
 	private List<Address> addresses;
+
 
 	@OneToMany(mappedBy = "person")
 	private List<PersonRelationship> relatives;
 
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithFamilies.class)
 	@ManyToMany
 	@JoinTable(name = "person_family", joinColumns = @JoinColumn(name = "personId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "familyId", referencedColumnName = "id"))
 	private List<Family> families;

@@ -31,6 +31,7 @@ public class FamilyRoleController {
 	@Autowired
 	private FamilyRoleRepository familyRoleRepository;
 	
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Add Admin role for family member", notes = "Add Admin role for person in Family")
 	@RequestMapping(path = "/api/family/Admin", method = RequestMethod.POST)
 	public ResponseEntity<Void> addFamilyAdmin(@Validated @RequestBody FamilyRole f) {	
@@ -49,7 +50,7 @@ public class FamilyRoleController {
 		familyRoleRepository.save(f);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
-	
+
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find Family Admins", notes = "Returns Admins for a given family id")
 	@RequestMapping(path = "/api/family/{id}/admins", method = RequestMethod.GET)
