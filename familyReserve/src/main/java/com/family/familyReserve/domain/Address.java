@@ -145,5 +145,28 @@ public class Address implements Serializable {
 		public void setLongitude(Double longitude) {
 			this.longitude = longitude;
 		}
-	}
+
+		public void merge(Address r) {
+			// TODO Auto-generated method stub
+			if (r.streetAddress != null) {
+				this.streetAddress = r.streetAddress;
+			}
+			if (r.city != null)  {
+				this.city = r.city;
+			}
+			if (r.state != null)  {
+				this.state = r.state;
+			}
+			if (r.zipCode !=0) {
+				this.zipCode = r.zipCode;
+			}
+//			if (r.latitude !=0) {
+//				this.latitude = r.latitude;
+//			}
+//			if (r.longitude !=0) {
+//				this.longitude = r.longitude;
+//			}
+		}
+}
+
 		

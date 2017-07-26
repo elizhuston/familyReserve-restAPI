@@ -18,9 +18,9 @@ import com.family.familyReserve.domain.AddressRepository;
 
 import com.family.familyReserve.domain.View;
 import com.fasterxml.jackson.annotation.JsonView;
-
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import com.family.familyReserve.domain.ConsumeResults;
-
+import com.family.familyReserve.domain.Person;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,22 +70,32 @@ public class AddressController {
 	}
 //================== Updates Existing Person Address ============ 	
 	
-	@ApiOperation(value = "Updates person address", notes = "Updates a person address in them database")	
+	@ApiOperation(value = "Updates person address", notes = "Updates a person address in the database")	
 	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Address> updateAddress(@RequestBody Address r)  {
+	public ResponseEntity<Address> updateAddress( @RequestBody Address r)  {
 			//@PathVariable(name = "id", required = true) Integer id) {
-		System.out.println("/api/address/{id} PUT id is" + r.getId() );
-
-	String fullAddress = r.getStreetAddress() + " "+ r.getCity() 
-	+ " , " + r.getState() + " , " + r.getZipCode(); 
-	Address adr = new ConsumeResults().getLngLatFromGoogle(r);	
+		System.out.println("api/address PUT id is" + r.getId() );
 		
-	System.out.println(fullAddress);
-	addressRepository.save(adr);
-	return new ResponseEntity<Address>(adr, HttpStatus.OK);
+			if (r.getId()==0)  {
+			return new ResponseEntity<Address>(r,HttpStatus.BAD_REQUEST);
+		}
+			
+		Address existing = addressRepository.findOne(r.getId());
+			if (existing == null){
+			return new ResponseEntity<Address>(r, HttpStatus.BAD_REQUEST);
+			}
+			
 		
-
-	
+		existing.merge(r);
+		String fullAddress = existing.getStreetAddress() + " "+ existing.getCity() 
+		+ " , " + existing.getState() + " , " + existing.getZipCode();
+		Address adr = new ConsumeResults().getLngLatFromGoogle(existing);				
+		
+		System.out.println(fullAddress);
+		existing.setLatitude(adr.getLatitude());
+		existing.setLongitude(adr.getLongitude());
+		addressRepository.save(existing);
+		return new ResponseEntity<Address>(r, HttpStatus.OK);
 }	
 //================ Deletes existing Person Address =====================
 	
