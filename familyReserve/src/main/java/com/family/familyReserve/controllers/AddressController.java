@@ -32,7 +32,7 @@ public class AddressController {
 	
 	@Autowired
 	private AddressRepository addressRepository;
-	
+	//================== Creates New Person Address ==============
 	
 	@ApiOperation(value = "Add address for person", notes = "Adds address for person")
 	@RequestMapping(path = "/api/address", method = RequestMethod.POST)
@@ -56,6 +56,7 @@ public class AddressController {
 		addressRepository.save(adr);
 		return new ResponseEntity<Address>(adr, HttpStatus.CREATED);
 	}
+// ========= Returns person address matching ID in the database
 	
 	@JsonView(View.Individual.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
@@ -67,7 +68,36 @@ public class AddressController {
 		return new ResponseEntity<List<Address>>(residences, HttpStatus.OK);
 
 	}
+//================== Updates Existing Person Address ============ 	
 	
+	@ApiOperation(value = "Updates person address", notes = "Updates a person address in them database")	
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Address> updateAddress(@RequestBody Address r)  {
+			//@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id} PUT id is" + r.getId() );
+
+	String fullAddress = r.getStreetAddress() + " "+ r.getCity() 
+	+ " , " + r.getState() + " , " + r.getZipCode(); 
+	Address adr = new ConsumeResults().getLngLatFromGoogle(r);	
+		
+	System.out.println(fullAddress);
+	addressRepository.save(adr);
+	return new ResponseEntity<Address>(adr, HttpStatus.OK);
+		
+
+	
+}	
+//================ Deletes existing Person Address =====================
+	
+	@ApiOperation(value = "Deletes person address with given id", notes = "Deletes a person address from database")	
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteAddress(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id} DELETE " + id);
+				
+	  addressRepository.delete(id);
+	  
+	return new ResponseEntity<String>("Address deleted", HttpStatus.OK);
+}
 	
 	public AddressController() {
 		// TODO Auto-generated constructor stub
