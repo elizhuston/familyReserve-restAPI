@@ -68,6 +68,26 @@ public class FamilyController {
 	}
 
 	
+// photoset id is putting the string "{photoSetId}" into the field, so commenting out
+//	@RequestMapping(path = "/api/family/{familyId}/addPhotoSetId/{photoSetId}", method = RequestMethod.PUT)
+//	@ApiOperation(value = "Add photoSetId to family", notes = "Add a photoSetId to a family" + " request\n")
+//	public ResponseEntity<Void> updateFamilyPhotSetId(
+//			@PathVariable(name="familyId", required=true) Integer familyId,
+//			@PathVariable(name="photoSetId", required = true) String photoSetId) {
+//
+//		System.out.println("/api/family/{familyId}/addPhotoSetId/{photoSetId}" + photoSetId);
+//
+//		Family f= familyRepository.findOne(familyId);
+//		if (f == null ) {
+//			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+//		}
+//		f.setPhotoSetId(photoSetId);
+//		familyRepository.save(f);
+//      	
+//		return new ResponseEntity<Void>(HttpStatus.OK);
+//	}
+	
+	
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find Families", notes = "Returns and array of all Families")
 	@RequestMapping(path = "/api/family", method = RequestMethod.GET)
