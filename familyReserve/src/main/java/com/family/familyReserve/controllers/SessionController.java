@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class SessionController {
 	@Autowired
 	private PersonRepository personRepository;
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithFamilies.class)
 	@PostMapping({"/session/new"})
 	public ResponseEntity<Person> login(@RequestBody Credentials creds) {
 		System.out.println("Logging in user " + creds.getUserName());
