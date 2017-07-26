@@ -149,7 +149,7 @@ public class Address implements Serializable {
 		public void setLongitude(Double longitude) {
 			this.longitude = longitude;
 		}
-		
+  
 		public void merge(Address r) {
 			// TODO Auto-generated method stub
 			if (r.streetAddress != null) {
@@ -171,6 +171,5 @@ public class Address implements Serializable {
 //				this.longitude = r.longitude;
 //			}
 		}
-		
-	}
+
 		
