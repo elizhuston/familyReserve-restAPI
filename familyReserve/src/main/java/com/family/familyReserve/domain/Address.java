@@ -52,7 +52,7 @@ public class Address implements Serializable {
 	
 	@JsonView(View.SummaryWithAddresses.class)
 	@NotNull(message = "Zipcode is required")
-	private int zipCode;
+	private String zipCode;
 	
 	@JsonView(View.SummaryWithAddresses.class)
 	private Double latitude;
@@ -64,7 +64,7 @@ public class Address implements Serializable {
 		public Address() {
 		}
 		
-		public Address(Person person, String streetAddress, String city, String state, int zipCode, Double latitude, Double longitude ) {
+		public Address(Person person, String streetAddress, String city, String state, String zipCode, Double latitude, Double longitude ) {
 			this.person= person;
 			this.streetAddress=streetAddress;
 			this.city=city;
@@ -74,7 +74,7 @@ public class Address implements Serializable {
 			this.longitude=longitude;
 		}
 		
-		public Address(Person person, String streetAddress, String city, String state, int zipCode) {
+		public Address(Person person, String streetAddress, String city, String state, String zipCode) {
 			this.person= person;
 			this.streetAddress=streetAddress;
 			this.city=city;
@@ -126,11 +126,11 @@ public class Address implements Serializable {
 			this.state = state;
 		}
 
-		public int getZipCode() {
+		public String getZipCode() {
 			return zipCode;
 		}
 
-		public void setZipCode(int zipCode) {
+		public void setZipCode(String zipCode) {
 			this.zipCode = zipCode;
 		}
 
@@ -149,7 +149,7 @@ public class Address implements Serializable {
 		public void setLongitude(Double longitude) {
 			this.longitude = longitude;
 		}
-		
+  
 		public void merge(Address r) {
 			// TODO Auto-generated method stub
 			if (r.streetAddress != null) {
@@ -161,7 +161,7 @@ public class Address implements Serializable {
 			if (r.state != null)  {
 				this.state = r.state;
 			}
-			if (r.zipCode !=0) {
+			if (r.zipCode != null) {
 				this.zipCode = r.zipCode;
 			}
 //			if (r.latitude !=0) {
@@ -170,7 +170,6 @@ public class Address implements Serializable {
 //			if (r.longitude !=0) {
 //				this.longitude = r.longitude;
 //			}
-		}
-		
-	}
+		}}
+
 		

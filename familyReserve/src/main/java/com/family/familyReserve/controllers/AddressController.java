@@ -18,9 +18,9 @@ import com.family.familyReserve.domain.AddressRepository;
 
 import com.family.familyReserve.domain.View;
 import com.fasterxml.jackson.annotation.JsonView;
-
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import com.family.familyReserve.domain.ConsumeResults;
-
+import com.family.familyReserve.domain.Person;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -81,11 +81,13 @@ public class AddressController {
 
 	}
 //================== Updates Existing Person Address ============ 	
+
 	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Updates person address", notes = "Updates a person's address with given addressId")	
 	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Address> updateAddress(@RequestBody Address r)  {
+	public ResponseEntity<Address> updateAddress( @RequestBody Address r)  {
 			//@PathVariable(name = "id", required = true) Integer id) {
+
 		System.out.println("/api/address/{id} PUT id is" + r.getId() );
 
 		if (r.getId()==0){
@@ -112,6 +114,7 @@ public class AddressController {
 	return new ResponseEntity<Address>(adr, HttpStatus.OK);
 
 	
+
 }	
 //================ Deletes existing Person Address =====================
 	

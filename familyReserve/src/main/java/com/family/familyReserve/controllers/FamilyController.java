@@ -110,7 +110,15 @@ public class FamilyController {
 
 	}
 	
+	@JsonView(View.Summary.class)
+	@ApiOperation(value = "Get faimly id", notes = "Returns family object for given id")
+	@RequestMapping(path = "/api/family/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Family> find(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/family/{id} GET " + id);
 	
+		Family family = familyRepository.findOne(id);
+		return new ResponseEntity<Family>(family, HttpStatus.OK);
+	}
 	
 	public FamilyController() {
 		// TODO Auto-generated constructor stub
