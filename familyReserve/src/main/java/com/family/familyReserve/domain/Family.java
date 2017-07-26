@@ -112,5 +112,5 @@ public class Family implements Serializable {
 	public void setPhotoSetId(String photoSetId) {
 		this.photoSetId = photoSetId;
 	}
-
+	
 }
