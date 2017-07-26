@@ -56,6 +56,7 @@ public class AddressController {
 		addressRepository.save(adr);
 		return new ResponseEntity<Address>(adr, HttpStatus.CREATED);
 	}
+// ========= Returns person address matching ID in the database
 	
 	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
@@ -67,7 +68,35 @@ public class AddressController {
 		return new ResponseEntity<List<Address>>(residences, HttpStatus.OK);
 
 	}
+//================== Updates Existing Person Address ============ 	
 	
+	@ApiOperation(value = "Updates person address", notes = "Updates a person's address with given addressId")	
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Address> updateAddress(@RequestBody Address r)  {
+			//@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id} PUT id is" + r.getId() );
+
+	String fullAddress = r.getStreetAddress() + " "+ r.getCity() 
+	+ " , " + r.getState() + " , " + r.getZipCode(); 
+	Address adr = new ConsumeResults().getLngLatFromGoogle(r);	
+		
+	System.out.println(fullAddress);
+	addressRepository.save(adr);
+	return new ResponseEntity<Address>(adr, HttpStatus.OK);
+
+	
+}	
+//================ Deletes existing Person Address =====================
+	
+	@ApiOperation(value = "Deletes person's address with given addressId", notes = "Deletes an address from database for addressId")	
+	@RequestMapping(path = "/api/address/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteAddress(@PathVariable(name = "id", required = true) Integer id) {
+		System.out.println("/api/address/{id} DELETE " + id);
+				
+	  addressRepository.delete(id);
+	  
+	return new ResponseEntity<String>("Address deleted", HttpStatus.OK);
+}
 	
 	public AddressController() {
 		// TODO Auto-generated constructor stub
