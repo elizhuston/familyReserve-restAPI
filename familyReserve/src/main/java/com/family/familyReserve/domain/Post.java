@@ -22,19 +22,19 @@ public class Post {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name = "familyId")
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private Family family;
 	
 	@ManyToOne
 	@JoinColumn(name = "personId")
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private Person postedBy;
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private String content;
 	
 //	@JsonFormat (shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")

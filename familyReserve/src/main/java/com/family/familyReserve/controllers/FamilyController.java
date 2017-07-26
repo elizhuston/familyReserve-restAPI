@@ -51,6 +51,7 @@ public class FamilyController {
 		return new ResponseEntity<Family>(f, HttpStatus.CREATED);
 	}
 	
+	@JsonView(View.SummaryWithPeople.class)
 	@RequestMapping(path = "/api/family/{familyId}/addMember/{personId}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Add member to family", notes = "Add a person to a family" + " request\n")
 	public ResponseEntity<Void> addFamilyMember(@PathVariable (name="familyId", required=true) Integer familyId, @PathVariable(name="personId", required = true) Integer personId) {
@@ -67,7 +68,7 @@ public class FamilyController {
 	}
 
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find Families", notes = "Returns and array of all Families")
 	@RequestMapping(path = "/api/family", method = RequestMethod.GET)
 	public ResponseEntity<List<Family>> findAllFamilies() {
@@ -77,7 +78,7 @@ public class FamilyController {
 
 	}
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithPeople.class)
 	@ApiOperation(value = "Find family members", notes = "Returns family members for given family id")
 	@RequestMapping(path = "/api/family/{id}/members", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findFamilyMembers(@PathVariable(name = "id", required = true) Integer id) {

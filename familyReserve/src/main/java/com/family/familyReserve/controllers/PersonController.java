@@ -37,6 +37,7 @@ public class PersonController {
 	@Autowired
 	private FamilyRepository familyRepository;
 	
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Add a new user", notes = "Adds a new user and returns the object containing the id")
 	@RequestMapping(path = "/api/user", method = RequestMethod.POST)
 	public ResponseEntity<Person> createAppUser(@Validated @RequestBody Person p) {
@@ -54,9 +55,8 @@ public class PersonController {
 		return new ResponseEntity<Person>(p, HttpStatus.CREATED);
 	}
 	
-	
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Add a new person", notes = "Adds a new person and returns the object containing the id")
-	@JsonView(View.Individual.class)
 	@RequestMapping(path = "/api/person", method = RequestMethod.POST)
 	public ResponseEntity<Person> createPerson(@Validated @RequestBody Person newPerson) {
 		System.out.println("/api/person POST ");
@@ -70,16 +70,14 @@ public class PersonController {
 		return new ResponseEntity<Person>(newPerson, HttpStatus.CREATED);
 	}
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@RequestMapping(path = "/api/person", method = RequestMethod.PUT)
 	public ResponseEntity<Person> updatePerson(@Validated @RequestBody Person person) {
 		System.out.println("/api/person PUT ");
-		if (person.getFirstName() == null) {
+		if (person.getId() == 0) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
-		if(person.getPassword() != null){
-			person.setEncPassword(person.getPassword());
-		}
+		
 		Person existing = personRepository.findPersonById(person.getId());
         if (existing == null){
         	return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
@@ -91,7 +89,7 @@ public class PersonController {
 		return new ResponseEntity<Person>(person, HttpStatus.CREATED);
 	}
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithFamilies.class)
 	@ApiOperation(value = "Get person by id", notes = "Returns person object for given id")
 	@RequestMapping(path = "/api/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Person> findPersonById(@PathVariable(name = "id", required = true) Integer id) {
@@ -101,7 +99,7 @@ public class PersonController {
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
 
 	}
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find People", notes = "Returns and array of all People")
 	@RequestMapping(path = "/api/people", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findAllPeople() {
@@ -112,7 +110,7 @@ public class PersonController {
 	}
 	
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithFamilies.class)
 	@ApiOperation(value = "Find Families by Person", notes = "Returns families for a given person id")
 	@RequestMapping(path = "/api/person/{id}/families", method = RequestMethod.GET)
 	public ResponseEntity<List<Family>> findFamiliesForPerson(@PathVariable(name = "id", required = true) Integer id) {
@@ -122,7 +120,7 @@ public class PersonController {
 		return new ResponseEntity<List<Family>>(families, HttpStatus.OK);
 
 	}
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithRelatives.class)
 	@ApiOperation(value = "Find Relatives", notes = "Returns relatives for a given person id")
 	@RequestMapping(path = "/api/person/{id}/relatives", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findRelativesForPerson(@PathVariable(name = "id", required = true) Integer id) {

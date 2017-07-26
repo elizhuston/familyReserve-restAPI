@@ -27,13 +27,18 @@ public class Family implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private int id;
 
 	@Column(unique = true)
-	@JsonView(View.Individual.class)
+	@JsonView(View.Summary.class)
 	private String name;
+	
 
+	@JsonView(View.Summary.class)
+	private String photoSetId;
+	
+	@JsonView(View.SummaryWithPeople.class)
 	@ManyToMany
 	@JoinTable(name = "person_family",
 	joinColumns =
@@ -43,10 +48,13 @@ public class Family implements Serializable {
 	)
 	private List<Person> members;
 	
+	@JsonView(View.SummaryWithFamilyRoles.class)
 	@OneToMany
 	@JoinColumn(name = "familyId")
 	private List<FamilyRole> roles;
 	
+	
+	//Constructors
 	public Family() {}
 	
 	public Family(String name) {
@@ -96,6 +104,13 @@ public class Family implements Serializable {
 		this.roles = roles;
 	}
 
-	
+
+	public String getPhotoSetId() {
+		return photoSetId;
+	}
+
+	public void setPhotoSetId(String photoSetId) {
+		this.photoSetId = photoSetId;
+	}
 
 }

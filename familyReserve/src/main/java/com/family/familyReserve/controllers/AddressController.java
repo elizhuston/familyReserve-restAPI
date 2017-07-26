@@ -33,7 +33,7 @@ public class AddressController {
 	@Autowired
 	private AddressRepository addressRepository;
 	
-	
+	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Add address for person", notes = "Adds address for person")
 	@RequestMapping(path = "/api/address", method = RequestMethod.POST)
 	public ResponseEntity<Address> createPersonAddress(@Validated @RequestBody Address r) {
@@ -57,7 +57,7 @@ public class AddressController {
 		return new ResponseEntity<Address>(adr, HttpStatus.CREATED);
 	}
 	
-	@JsonView(View.Individual.class)
+	@JsonView(View.SummaryWithAddresses.class)
 	@ApiOperation(value = "Get person addresses", notes = "Returns addresses for given person id")
 	@RequestMapping(path = "/api/address/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Address>> findPersonAddress(@PathVariable(name = "id", required = true) Integer id) {
