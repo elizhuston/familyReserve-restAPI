@@ -67,7 +67,7 @@ public class FamilyController {
 	}
 
 	
-	@JsonView(View.Summary.class)
+	@JsonView(View.Individual.class)
 	@ApiOperation(value = "Find Families", notes = "Returns and array of all Families")
 	@RequestMapping(path = "/api/family", method = RequestMethod.GET)
 	public ResponseEntity<List<Family>> findAllFamilies() {
