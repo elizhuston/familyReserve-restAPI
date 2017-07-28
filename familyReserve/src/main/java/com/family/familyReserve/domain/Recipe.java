@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.istack.internal.NotNull;
 
 @Entity
 @Table (name = "recipes")
@@ -33,7 +32,6 @@ public class Recipe implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "familyId")
 	@JsonView(View.Summary.class)
-	@NotNull
 	private Family family;
 	
 	@ManyToOne
@@ -41,7 +39,6 @@ public class Recipe implements Serializable {
 	@JsonView(View.Summary.class)
 	private Person postedBy;
 	
-	@NotNull
 	@NotEmpty
 	@JsonView(View.Summary.class)
 	private String title;

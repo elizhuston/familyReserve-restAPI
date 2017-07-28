@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.family.familyReserve.domain.Family;
 import com.family.familyReserve.domain.FamilyRepository;
-import com.family.familyReserve.domain.Person;
-import com.family.familyReserve.domain.Post;
+
 import com.family.familyReserve.domain.Recipe;
 import com.family.familyReserve.domain.RecipeRepository;
 import com.family.familyReserve.domain.View;
@@ -64,10 +63,29 @@ public class RecipeController {
 		return new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	
+	@JsonView(View.Summary.class)
+	@ApiOperation(value = "Get recipes", notes = "Returns an array of recipes")
+	@RequestMapping(path = "/api/recipes", method = RequestMethod.GET)
+	public ResponseEntity<List<Recipe>> findAll() {
+		System.out.println("/api/recipes GET " );
+	
+		List <Recipe> recipes = recipeRepository.findAll();
+				
+		return new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
 	}
+	
+	
+	@JsonView(View.Summary.class)
+	@ApiOperation(value = "Get all recipes for a family", notes = "Returns an array of recipes for given Family id")
+	@RequestMapping(path = "/api/family/{familyId}/recipes", method = RequestMethod.GET)
+	public ResponseEntity<List<Recipe>> findRecipesByFamily(@PathVariable(name = "familyId", required = true) Integer familyId) {
+		System.out.println("/api/family/{familyId}/recipes GET " );
+	
+		List <Recipe> recipes = recipeRepository.findRecipesByFamily(familyId);
+				
+		return new ResponseEntity<List<Recipe>>(recipes, HttpStatus.OK);
+	}
+	
 }
 	
