@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
 @Table(name = "relationType")
 public class RelationType implements Serializable {
@@ -15,7 +17,8 @@ public class RelationType implements Serializable {
 	@Id
 	@GeneratedValue
 	private int id;
-
+	
+	@JsonView(View.Summary.class)
 	@Column(unique = true)
 	private String description;
 
