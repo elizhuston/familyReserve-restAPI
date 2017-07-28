@@ -38,10 +38,10 @@ public class PersonRelationship implements Serializable {
 	@NotNull(message = "relative Id is required.")
 	private Person relative;
 	
-	@JsonView(View.Summary.class)
 	@ManyToOne
 	@JoinColumn(name = "relationTypeId")
 	@NotNull(message = "relation type Id is required.")
+	@JsonView(View.Summary.class)
 	private RelationType howRelated;
 	
 	@JsonView(View.Summary.class)

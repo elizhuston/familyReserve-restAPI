@@ -3,9 +3,13 @@ package com.family.familyReserve.domain;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +25,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.family.familyReserve.config.LocalDateTimeAttributeConverter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -51,6 +57,11 @@ public class Person implements Serializable {
 	@ApiModelProperty(notes = "Persons last name")
 	private String lastName;
 
+	
+	@JsonView(View.Summary.class)
+	@ApiModelProperty(notes = "Persons phone number")
+	private String phoneNumber;
+	
 	@JsonView(View.Summary.class)
 	@Column(unique = true)
 	@ApiModelProperty(notes = "userName used for login, must be unique")
@@ -65,6 +76,15 @@ public class Person implements Serializable {
 	@JsonView(View.Summary.class)
 	private String email;
 	
+	@Column
+//	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonView(View.Summary.class)
+	private Date birthDate;
+	
+	
+	@JsonView(View.Summary.class)
+	private String photoSetId;
 	
 	@OneToMany(mappedBy = "person")
 	@JsonIgnore
@@ -83,14 +103,27 @@ public class Person implements Serializable {
 	// Constructors
 	public Person() {
 	}
-
 	public Person(String firstName, String lastName, String userName, String password, String email,
-			String encPassword) {
+			Date birthDate, String photoSetId, String phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+		this.birthDate= birthDate;
+		this.phoneNumber=phoneNumber;
+		this.photoSetId=photoSetId;
+		this.encPassword = PasswordEncoderGenerator(password);
+
+	}
+	public Person(String firstName, String lastName, String userName, String password, String email,
+			Date birthDate, String encPassword) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.birthDate= birthDate;
 		this.encPassword = PasswordEncoderGenerator(password);
 
 	}
@@ -113,16 +146,13 @@ public class Person implements Serializable {
 		this.families.add(family);
 	}
 
-//	public Person(String username, String encryptedPassword) {
-//		this.userName = username;
-//		this.encPassword = PasswordEncoderGenerator(password);
-//	}
 	
 	public Person(String username, String password) {
 		this.userName = username;
 		this.encPassword = PasswordEncoderGenerator(password);
 	}
 
+	// Methods
 	public List<Family> getFamilies() {
 		return families;
 	}
@@ -249,7 +279,40 @@ public class Person implements Serializable {
 		if (person.email != null) {
 		this.email = person.email;
 		}
+		if (person.birthDate != null) {
+			this.birthDate = person.birthDate;
+		}
+		if (person.photoSetId != null) {
+			this.photoSetId = person.photoSetId;
+		}
+		if (person.phoneNumber != null) {
+			this.phoneNumber = person.phoneNumber;
+		}
 
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public String getPhotoSetId() {
+		return photoSetId;
+	}
+
+	public void setPhotoSetId(String photoSetId) {
+		this.photoSetId = photoSetId;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 }

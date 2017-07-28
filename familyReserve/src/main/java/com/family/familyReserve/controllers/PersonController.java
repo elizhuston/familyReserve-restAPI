@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.family.familyReserve.domain.Family;
 import com.family.familyReserve.domain.FamilyRepository;
 import com.family.familyReserve.domain.Person;
+import com.family.familyReserve.domain.PersonRelationship;
 import com.family.familyReserve.domain.PersonRelationshipRepo;
 import com.family.familyReserve.domain.PersonRepository;
 import com.family.familyReserve.domain.View;
@@ -33,10 +34,10 @@ public class PersonController {
 	private PersonRepository personRepository;
 	@Autowired
 	private PersonRelationshipRepo personRelationshipRepo;
-	
+
 	@Autowired
 	private FamilyRepository familyRepository;
-	
+
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Add a new user", notes = "Adds a new user and returns the object containing the id")
 	@RequestMapping(path = "/api/user", method = RequestMethod.POST)
@@ -48,13 +49,13 @@ public class PersonController {
 		if (personRepository.findPersonByUserName(p.getUserName()) != null) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
-		if(p.getPassword() != null){
+		if (p.getPassword() != null) {
 			p.setEncPassword(p.getPassword());
 		}
 		personRepository.save(p);
 		return new ResponseEntity<Person>(p, HttpStatus.CREATED);
 	}
-	
+
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Add a new person", notes = "Adds a new person and returns the object containing the id")
 	@RequestMapping(path = "/api/person", method = RequestMethod.POST)
@@ -63,13 +64,13 @@ public class PersonController {
 		if (newPerson.getFirstName() == null) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
-		if(newPerson.getPassword() != null){
+		if (newPerson.getPassword() != null) {
 			newPerson.setEncPassword(newPerson.getPassword());
 		}
 		personRepository.save(newPerson);
 		return new ResponseEntity<Person>(newPerson, HttpStatus.CREATED);
 	}
-	
+
 	@JsonView(View.Summary.class)
 	@RequestMapping(path = "/api/person", method = RequestMethod.PUT)
 	public ResponseEntity<Person> updatePerson(@Validated @RequestBody Person person) {
@@ -77,28 +78,29 @@ public class PersonController {
 		if (person.getId() == 0) {
 			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Person existing = personRepository.findPersonById(person.getId());
-        if (existing == null){
-        	return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
-        }
-        
+		if (existing == null) {
+			return new ResponseEntity<Person>(HttpStatus.BAD_REQUEST);
+		}
+
 		existing.merge(person);
 		personRepository.save(existing);
-	
+
 		return new ResponseEntity<Person>(person, HttpStatus.CREATED);
 	}
-	
+
 	@JsonView(View.SummaryWithFamilies.class)
 	@ApiOperation(value = "Get person by id", notes = "Returns person object for given id")
 	@RequestMapping(path = "/api/person/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Person> findPersonById(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/api/person/{id} GET " + id);
-	
+
 		Person person = personRepository.findPersonById(id);
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
 
 	}
+
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find People", notes = "Returns and array of all People")
 	@RequestMapping(path = "/api/people", method = RequestMethod.GET)
@@ -108,30 +110,30 @@ public class PersonController {
 		return new ResponseEntity<List<Person>>(people, HttpStatus.OK);
 
 	}
-	
-	
+
 	@JsonView(View.SummaryWithFamilies.class)
 	@ApiOperation(value = "Find Families by Person", notes = "Returns families for a given person id")
 	@RequestMapping(path = "/api/person/{id}/families", method = RequestMethod.GET)
 	public ResponseEntity<List<Family>> findFamiliesForPerson(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/api/person/{id}/families GET " + id);
-	
+
 		List<Family> families = familyRepository.findFamiliesForPerson(id);
 		return new ResponseEntity<List<Family>>(families, HttpStatus.OK);
 
 	}
-	@JsonView(View.SummaryWithRelatives.class)
+
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Find Relatives", notes = "Returns relatives for a given person id")
 	@RequestMapping(path = "/api/person/{id}/relatives", method = RequestMethod.GET)
-	public ResponseEntity<List<Person>> findRelativesForPerson(@PathVariable(name = "id", required = true) Integer id) {
-		System.out.println("/api/person/{id}/relatives GET " + id);
-	
-		List<Person> people = personRelationshipRepo.findRelativesForPerson(id);
-		return new ResponseEntity<List<Person>>(people, HttpStatus.OK);
+	public ResponseEntity<List<PersonRelationship>> findRelativesForPerson(
+			@PathVariable(name = "id", required = true) Integer id) {
+//		System.out.println("/api/person/{id}/relatives GET " + id);
+
+		List<PersonRelationship> relatives = personRelationshipRepo.findRelativesForPerson(id);
+		return new ResponseEntity<List<PersonRelationship>>(relatives, HttpStatus.OK);
 
 	}
-	
-	
+
 	public PersonController() {
 		// TODO Auto-generated constructor stub
 	}

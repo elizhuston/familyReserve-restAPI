@@ -1,6 +1,7 @@
 package com.family.familyReserve.controllers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class PostController {
 		if (post.getPostedBy() == null) {
 			return new ResponseEntity<Post>(HttpStatus.BAD_REQUEST);
 		}
-		//post.setPostDate(LocalDate.now());
+		post.setPostDate(LocalDateTime.now());
 		postRepository.save(post);
 		return new ResponseEntity<Post>(post, HttpStatus.CREATED);
 	}

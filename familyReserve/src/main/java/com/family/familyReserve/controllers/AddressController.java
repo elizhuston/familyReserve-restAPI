@@ -18,7 +18,6 @@ import com.family.familyReserve.domain.AddressRepository;
 
 import com.family.familyReserve.domain.View;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import com.family.familyReserve.domain.ConsumeResults;
 import com.family.familyReserve.domain.Person;
 
@@ -41,15 +40,7 @@ public class AddressController {
 		String fullAddress = r.getStreetAddress() + " "+ r.getCity() 
 		+ " , " + r.getState() + " , " + r.getZipCode(); 
 		
-		/*
-		 * 1. Make a call to Google API for lng, lat for above address
-		 * 2. Populate r object with longitude and latitude
-		 *
-		 */
 		
-//		r.setLatitude(38.8950017);
-//		r.setLongitude(-77.0291484);
-		//populate address object with associated lng and lat
 		Address adr = new ConsumeResults().getLngLatFromGoogle(r);				
 		
 		System.out.println(fullAddress);

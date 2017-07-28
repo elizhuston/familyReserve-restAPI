@@ -1,8 +1,10 @@
 package com.family.familyReserve.domain;
 
 import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.family.familyReserve.config.LocalDateTimeAttributeConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -37,8 +40,11 @@ public class Post {
 	@JsonView(View.Summary.class)
 	private String content;
 	
-//	@JsonFormat (shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-//	private LocalDate postDate;
+	@Column
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonView(View.Summary.class)
+	private LocalDateTime postDate;
 	
 	public int getId() {
 		return id;
@@ -64,13 +70,13 @@ public class Post {
 		this.content = content;
 	}
 
-//	public LocalDate getPostDate() {
-//		return postDate;
-//	}
-//
-//	public void setPostDate(LocalDate postDate) {
-//		this.postDate = postDate;
-//	}
+	public LocalDateTime getPostDate() {
+		return postDate;
+	}
+
+	public void setPostDate(LocalDateTime postDate) {
+		this.postDate = postDate;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

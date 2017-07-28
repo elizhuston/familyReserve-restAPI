@@ -15,8 +15,8 @@ public interface PersonRelationshipRepo extends JpaRepository<PersonRelationship
 	@Query("SELECT p from Person as p LEFT JOIN p.relatives as relatives WHERE p.id=:id")
 	public <List>Person findRelationship(@Param("id") int id);
 
-	@Query("SELECT relative from PersonRelationship as pr WHERE person_id=:id")
-	public List<Person> findRelativesForPerson(@Param("id") int id);
+	@Query("SELECT pr.relative, pr.howRelated,pr.family from PersonRelationship as pr WHERE person_id=:id")
+	public List<PersonRelationship> findRelativesForPerson(@Param("id") int id);
 	
 //	@Query("Select m from Movie as m LEFT JOIN m.authors as authors where UPPER(authors.name) like UPPER(CONCAT('%',:name, '%'))")
 //	public List<Movie> findByAuthorLike(@Param("name") String name);
