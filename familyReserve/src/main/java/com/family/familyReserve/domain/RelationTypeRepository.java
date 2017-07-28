@@ -12,7 +12,7 @@ public interface RelationTypeRepository extends JpaRepository<RelationType, Inte
 	@Query("SELECT t from RelationType t WHERE UPPER(description) = UPPER(:description)")
 	public Person findRelationTypeByDesc(@Param("description") String description);
 
-	@Query("SELECT t from RelationType t")
+	@Query("SELECT t from RelationType t ORDER BY t.description")
 	public List<RelationType> findAllRelationTypes();
 
 }

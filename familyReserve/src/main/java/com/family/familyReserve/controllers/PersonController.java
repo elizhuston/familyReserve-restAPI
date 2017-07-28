@@ -102,7 +102,7 @@ public class PersonController {
 	}
 
 	@JsonView(View.Summary.class)
-	@ApiOperation(value = "Find People", notes = "Returns and array of all People")
+	@ApiOperation(value = "Find People", notes = "Returns an array of all People")
 	@RequestMapping(path = "/api/people", method = RequestMethod.GET)
 	public ResponseEntity<List<Person>> findAllPeople() {
 		System.out.println("/api/people GET ");

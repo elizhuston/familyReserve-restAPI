@@ -1,7 +1,6 @@
-{
-  "firstName" : "Elizabeth",
-  "lastName" : "Huston",
-  "userName" : "ehuston",
-  "password" : "test",
-  "email" : "ehuston@nowho.com"
+{ "id" : "20",
+  "firstName" : "Elizabeth2",
+  "email" : "ehuston@nowhoey.com",
+  "phoneNumber" : "317-455-1212",
+  "birthDate": "1976-08-10"
 }

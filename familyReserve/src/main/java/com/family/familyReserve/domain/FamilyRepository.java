@@ -14,12 +14,11 @@ public interface FamilyRepository  extends JpaRepository<Family, Integer>{
 	@Query("SELECT p from Family as f LEFT JOIN f.members as p WHERE f.id = :id ORDER by p.lastName, p.firstName")
 	public List<Person> findFamilyMembers(@Param("id") int id);
 
-	@Query("SELECT f from Family f")
+	@Query("SELECT f from Family f ORDER BY f.name")
 	public List<Family> findAllFamilies();
 
 	@Query("SELECT f from Person p LEFT JOIN p.families as f where p.id=:id ORDER by f.name")
 	public List<Family> findFamiliesForPerson(@Param("id") int id);
-	
 
 	
 	@Query("SELECT f from Family as f where f.id=:id")

@@ -19,7 +19,7 @@ public interface PersonRepository extends  PagingAndSortingRepository<Person, Lo
 	
 	public List<Person> findByLastName(@Param("lastName") String lastName);
 
-	@Query("SELECT p from Person p")
+	@Query("SELECT p from Person p ORDER BY p.lastName,p.firstName")
 	public List<Person> findAllPeople();
 
 	@Query("SELECT p from Person p WHERE id=:id")
