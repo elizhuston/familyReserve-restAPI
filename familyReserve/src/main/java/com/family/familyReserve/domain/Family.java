@@ -69,7 +69,7 @@ public class Family implements Serializable {
 		this.roles.add(role);
 	}
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	public List<Person> getMembers() {
