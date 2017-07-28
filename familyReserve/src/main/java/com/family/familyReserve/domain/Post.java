@@ -42,7 +42,7 @@ public class Post {
 	
 	@Column
 	@Convert(converter = LocalDateTimeAttributeConverter.class)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@JsonView(View.Summary.class)
 	private LocalDateTime postDate;
 	

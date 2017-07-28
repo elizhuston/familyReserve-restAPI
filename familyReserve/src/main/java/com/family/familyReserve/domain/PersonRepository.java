@@ -25,6 +25,7 @@ public interface PersonRepository extends  PagingAndSortingRepository<Person, Lo
 	@Query("SELECT p from Person p WHERE id=:id")
 	public Person findPersonById(@Param("id")Integer id);
 
-		
+//	@Query("SELECT p from Person p WHERE birthDate  =:id")
+//	public Person findPersonBirthday(@Param("")Integer id);	
 
 }

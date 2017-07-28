@@ -111,7 +111,7 @@ public class FamilyController {
 	}
 	
 	@JsonView(View.Summary.class)
-	@ApiOperation(value = "Get faimly id", notes = "Returns family object for given id")
+	@ApiOperation(value = "Get family id", notes = "Returns family object for given id")
 	@RequestMapping(path = "/api/family/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Family> find(@PathVariable(name = "id", required = true) Integer id) {
 		System.out.println("/api/family/{id} GET " + id);
