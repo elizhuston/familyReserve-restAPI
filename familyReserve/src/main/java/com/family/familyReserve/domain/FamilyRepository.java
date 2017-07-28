@@ -20,4 +20,7 @@ public interface FamilyRepository  extends JpaRepository<Family, Integer>{
 	@Query("SELECT f from Person p LEFT JOIN p.families as f where p.id=:id")
 	public List<Family> findFamiliesForPerson(@Param("id") int id);
 	
+	
+	@Query("SELECT f from Family as f where f.id=:id")
+	public Family findFamilyById(@Param("id") int id);
 }
