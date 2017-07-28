@@ -43,16 +43,17 @@ public class Recipe implements Serializable {
 	
 	@NotNull
 	@NotEmpty
+	@JsonView(View.Summary.class)
 	private String title;
-	
+	@JsonView(View.Summary.class)
 	private String ingredients;
-			
+	@JsonView(View.Summary.class)		
 	private String directions;
-	
+	@JsonView(View.Summary.class)
 	private String preps;
-	
+	@JsonView(View.Summary.class)
 	private String cookTime;
-	
+	@JsonView(View.Summary.class)
 	private int serves;
 	
 	// Constructors

@@ -53,7 +53,7 @@ public class RecipeController {
 		return new ResponseEntity<Recipe>(recipe,HttpStatus.CREATED);
 	}
 	
-	@JsonView(View.SummaryWithFamilies.class)
+	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Get recipe by id", notes = "Returns recipe object for given id")
 	@RequestMapping(path = "/api/recipe/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Recipe> findOneId(@PathVariable(name = "id", required = true) Integer id) {
