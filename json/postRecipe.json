@@ -1,0 +1,10 @@
+{
+"title": "Joe's Cheesecake",
+"cookTime": "1 hour",
+ "directions": "Crust: Mix all ingredients and press them in the bottom of a 10 inch spring form pan.  Sometimes I add more butter depndending on crackrs and humidity.",
+ "ingredients": "graham cracker crumbs, butter, sugar, cream cheese, 1 1/2 tbsp. lemon juice",
+  "serves": 4,
+ "family": {
+    "id": 61},
+"postedBy" : {"id" : 50}
+}
