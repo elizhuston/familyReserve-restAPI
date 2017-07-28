@@ -67,7 +67,21 @@ public class FamilyController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	
+	@JsonView(View.SummaryWithPeople.class)
+	@RequestMapping(path = "/api/family/{familyId}/removeMember/{personId}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Remove member from family", notes = "Remove a person from a family" + " request\n")
+	public ResponseEntity<Void> removeFamilyMember(@PathVariable (name="familyId", required=true) Integer familyId, @PathVariable(name="personId", required = true) Integer personId) {
+		System.out.println("/api/family/{familyId}/removeMember/{personId} ");
+		Person p =personRepository.findPersonById(personId);
+		Family f= familyRepository.findOne(familyId);
+		if (p == null || f == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		f.removeMember(p);
+		familyRepository.save(f);
+      	
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 // photoset id is putting the string "{photoSetId}" into the field, so commenting out
 //	@RequestMapping(path = "/api/family/{familyId}/addPhotoSetId/{photoSetId}", method = RequestMethod.PUT)
 //	@ApiOperation(value = "Add photoSetId to family", notes = "Add a photoSetId to a family" + " request\n")
@@ -98,6 +112,17 @@ public class FamilyController {
 
 	}
 	
+	
+	@JsonView(View.Summary.class)
+	@ApiOperation(value = "Find Families a Person May Join", notes = "Returns and array of all Families the person is not a member of.")
+	@RequestMapping(path = "/api/familiesJoinable/{personId}", method = RequestMethod.GET)
+	public ResponseEntity<List<Family>> findFamiliesJoinable(@PathVariable(name = "personId", required = true) Integer personId) {
+		System.out.println("/api/familiesJoinable/{personId} GET ");
+		List<Family> families = familyRepository.findFamiliesJoinable(personId);
+		return new ResponseEntity<List<Family>>(families, HttpStatus.OK);
+
+	}
+	
 	@JsonView(View.SummaryWithPeople.class)
 	@ApiOperation(value = "Find family members", notes = "Returns family members for given family id")
 	@RequestMapping(path = "/api/family/{id}/members", method = RequestMethod.GET)
@@ -109,6 +134,8 @@ public class FamilyController {
 		return new ResponseEntity<List<Person>>(people, HttpStatus.OK);
 
 	}
+	
+
 	
 	@JsonView(View.Summary.class)
 	@ApiOperation(value = "Get family id", notes = "Returns family object for given id")
