@@ -62,6 +62,10 @@ public class Person implements Serializable {
 	@ApiModelProperty(notes = "Persons phone number")
 	private String phoneNumber;
 	
+	
+	@JsonView(View.Summary.class)
+	private String profilePhotoId;
+	
 	@JsonView(View.Summary.class)
 	@Column(unique = true)
 	@ApiModelProperty(notes = "userName used for login, must be unique")
@@ -288,6 +292,9 @@ public class Person implements Serializable {
 		if (person.phoneNumber != null) {
 			this.phoneNumber = person.phoneNumber;
 		}
+		if (person.profilePhotoId != null) {
+			this.profilePhotoId = person.profilePhotoId;
+		}
 
 	}
 
@@ -313,6 +320,12 @@ public class Person implements Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	public String getProfilePhotoId() {
+		return profilePhotoId;
+	}
+	public void setProfilePhotoId(String profilePhotoId) {
+		this.profilePhotoId = profilePhotoId;
 	}
 
 }
