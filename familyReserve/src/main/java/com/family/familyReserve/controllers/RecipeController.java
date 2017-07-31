@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.family.familyReserve.domain.Family;
 import com.family.familyReserve.domain.FamilyRepository;
-
+import com.family.familyReserve.domain.Person;
 import com.family.familyReserve.domain.Recipe;
 import com.family.familyReserve.domain.RecipeRepository;
 import com.family.familyReserve.domain.View;
@@ -63,9 +63,26 @@ public class RecipeController {
 		return new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
 	}
 	
+	@JsonView(View.Summary.class)
+	@ApiOperation(value = "Update recipe by id", notes = "Updates recipe fields for a recipe.")
+	@RequestMapping(path = "/api/recipe", method = RequestMethod.PUT)
+	public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipe) {
+		System.out.println("/api/recipe PUT ");
+		Recipe existing = recipeRepository.findOne(recipe.getId());
+		if (existing == null) {
+			return new ResponseEntity<Recipe>(HttpStatus.BAD_REQUEST);
+		}
+
+		existing.merge(recipe);
+		recipeRepository.save(existing);
+				
+		return new ResponseEntity<Recipe>(recipe, HttpStatus.OK);
+	}
+	
+	
 	
 	@JsonView(View.Summary.class)
-	@ApiOperation(value = "Get recipes", notes = "Returns an array of recipes")
+	@ApiOperation(value = "Get recipes", notes = "Returns an array of all recipes")
 	@RequestMapping(path = "/api/recipes", method = RequestMethod.GET)
 	public ResponseEntity<List<Recipe>> findAll() {
 		System.out.println("/api/recipes GET " );

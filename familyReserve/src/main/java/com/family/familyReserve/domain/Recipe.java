@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
-@Table (name = "recipes")
+@Table(name = "recipes")
 
 public class Recipe implements Serializable {
 
@@ -23,9 +23,9 @@ public class Recipe implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-		
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@JsonView(View.Summary.class)
 	private int id;
 
@@ -33,18 +33,18 @@ public class Recipe implements Serializable {
 	@JoinColumn(name = "familyId")
 	@JsonView(View.Summary.class)
 	private Family family;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "personId")
 	@JsonView(View.Summary.class)
 	private Person postedBy;
-	
+
 	@NotEmpty
 	@JsonView(View.Summary.class)
 	private String title;
 	@JsonView(View.Summary.class)
 	private String ingredients;
-	@JsonView(View.Summary.class)		
+	@JsonView(View.Summary.class)
 	private String directions;
 	@JsonView(View.Summary.class)
 	private String preps;
@@ -52,21 +52,21 @@ public class Recipe implements Serializable {
 	private String cookTime;
 	@JsonView(View.Summary.class)
 	private int serves;
-	
+
 	// Constructors
-	
+
 	public Recipe() {
-		
+
 	}
-	
-	public Recipe(String title, String ingredients, String directions, String preps, String cookTime)  {
-			this.title = title;
-			this.ingredients = ingredients;
-			this.directions = directions;
-			this.preps = preps;
-			this.cookTime = cookTime;
+
+	public Recipe(String title, String ingredients, String directions, String preps, String cookTime) {
+		this.title = title;
+		this.ingredients = ingredients;
+		this.directions = directions;
+		this.preps = preps;
+		this.cookTime = cookTime;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -133,7 +133,27 @@ public class Recipe implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	} 
-	
-	
+	}
+
+	public void merge(Recipe recipe) {
+		if (recipe.title != null) {
+			this.title = recipe.title;
+		}
+		if (recipe.ingredients != null) {
+			this.ingredients = recipe.ingredients;
+		}
+		if (recipe.directions != null) {
+			this.directions = recipe.directions;
+		}
+		if (recipe.preps != null) {
+			this.preps = recipe.preps;
+		}
+		if (recipe.cookTime != null) {
+			this.cookTime = recipe.cookTime;
+		}
+		if (recipe.serves != 0) {
+			this.serves = recipe.serves;
+		}
+
+	}
 }
