@@ -1,0 +1,6 @@
+{
+  "family": {"id": 61} ,
+  "postedBy": {"id": 50},
+  "people": [ {"id": 50 } ,{"id": 70 },{"id": 71} ],
+  "story": "Some story text about these people."
+}
